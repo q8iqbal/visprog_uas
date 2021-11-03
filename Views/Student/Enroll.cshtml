@@ -1,0 +1,17 @@
+@model CampusApp.Models.Student
+@using System.Linq
+<h1>Enroll Mata Kuliah Pada Mahasiswa</h1>
+<form asp-action="Enroll">
+<input type="hidden" name="StudentID" value="@ViewBag.Student.StudentID"/>
+<ul style="list-style-type: none;">
+    @foreach (var item in @ViewBag.Courses)
+    {
+        <li><input type="checkbox" name="CourseIDs" value="@item.CourseID" @if(ViewBag.List.Contains(item.CourseID)){ Write("checked"); }/> @item.Title </li>
+    }
+</ul>
+<input type="submit" value="Enroll Student">
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

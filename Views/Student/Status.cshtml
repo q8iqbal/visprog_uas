@@ -1,0 +1,37 @@
+@model CampusApp.Models.Student
+@using System.Linq
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<h1>Update status Mata Kuliah Pada Mahasiswa</h1>
+
+    <ul >
+        @foreach (var item in @ViewBag.Enrollment)
+        {
+            <li> 
+                @item.Course.Title 
+                <br>
+                <input type="radio" name="data[@item.EnrollmentID]" value="@item.EnrollmentID diambil" @if(item.Status == "diambil"){ Write("checked"); }/> Belum Selesai
+                <input type="radio" name="data[@item.EnrollmentID]" value="@item.EnrollmentID selesai" @if(item.Status == "selesai"){ Write("checked"); }/> Selesai
+            </li>
+        }
+    </ul>
+    <input type="submit" onclick="call()">
+
+<script type="text/javascript">
+        function call() {
+            let data = $('input[name^="data"]:checked').map(function(){return $(this).val()}).get();
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("Status","Student")',
+                data: { 'data': data },
+                datatype: "json",
+                success: function(response){
+                    alert("data berhasil di update")
+                }
+            });
+        }
+</script>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
